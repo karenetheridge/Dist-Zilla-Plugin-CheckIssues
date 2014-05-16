@@ -12,8 +12,7 @@ use Moose::Util 'find_meta';
 use lib 't/lib';
 use NoNetworkHits;
 
-# data copied from Moose stats
-my $rt_text = '{"Foo-Bar":{"dist":"Foo-Bar","counts":{"rejected":0,"inactive":1,"active":0,"resolved":1,"patched":0,"open":0,"stalled":0,"new":0}},"DZT-Sample":{"dist":"DZT-Sample","counts":{"rejected":47,"inactive":207,"active":52,"resolved":160,"patched":0,"deleted":108,"open":39,"stalled":4,"new":9}}}';
+my $rt_text = '{"Foo-Bar":{"dist":"Foo-Bar","counts":{"rejected":0,"inactive":1,"active":0,"resolved":1,"patched":0,"open":0,"stalled":0,"new":0}}}';
 
 {
     use Dist::Zilla::Plugin::CheckIssues;
@@ -47,9 +46,9 @@ cmp_deeply(
     [ map { split "\n" } @{ $tzil->log_messages } ],
     superbagof(
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
-        '[CheckIssues] open: 48   stalled: 4',
+        '[CheckIssues] open: 0   stalled: 0',
     ),
-    'bug information correctly printed',
+    'no RT information found - reported as 0 issues',
 ) or diag 'saw log messages: ', explain $tzil->log_messages;
 
 done_testing;
