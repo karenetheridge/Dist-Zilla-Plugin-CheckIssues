@@ -64,13 +64,13 @@ sub before_release
             : $rt_data{stalled} ? 'yellow'
             : 'green';
 
-        my $text = 'Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name='
-            . $dist_name . '):' . "\n"
-            . 'open: ' .  ($rt_data{open} || 0)
-            . '   stalled: ' . ($rt_data{stalled} || 0);
+        my @text = (
+            'Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=' . $dist_name . '):',
+            '  open: ' .  ($rt_data{open} || 0) . '   stalled: ' . ($rt_data{stalled} || 0),
+        );
 
-        $text = colored($text, $colour) if $self->colour;
-        $self->log($text);
+        @text = map { colored($_, $colour) } @text if $self->colour;
+        $self->log($_) foreach @text;
     }
 
     if ($self->github
@@ -81,10 +81,13 @@ sub before_release
         {
             my $colour = $issue_count ? 'red' : 'green';
 
-            my $text = 'Issues on github (' . $self->repo_url . "):\nopen: " . $issue_count;
+            my @text = (
+                'Issues on github (' . $self->repo_url . '):',
+                '  open: ' . $issue_count,
+            );
 
-            $text = colored($text, $colour) if $self->colour;
-            $self->log($text);
+            @text = map { colored($_, $colour) } @text if $self->colour;
+            $self->log($_) foreach @text;
         }
     }
 

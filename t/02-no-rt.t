@@ -46,7 +46,7 @@ cmp_deeply(
     [ map { split "\n" } @{ $tzil->log_messages } ],
     superbagof(
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
-        '[CheckIssues] open: 0   stalled: 0',
+        '[CheckIssues]   open: 0   stalled: 0',
     ),
     'no RT information found - reported as 0 issues',
 ) or diag 'saw log messages: ', explain $tzil->log_messages;

@@ -2,6 +2,7 @@ Revision history for {{$dist->name}}
 
 {{$NEXT}}
           - "github" option now fully supported
+          - fix colour bleeding between output lines
 
 0.001     2014-05-16 22:33:16Z
           - Initial release.

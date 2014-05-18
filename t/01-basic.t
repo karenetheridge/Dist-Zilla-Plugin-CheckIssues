@@ -49,9 +49,9 @@ cmp_deeply(
     [ map { split "\n" } @{ $tzil->log_messages } ],
     superbagof(
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
-        '[CheckIssues] open: 48   stalled: 4',
+        '[CheckIssues]   open: 48   stalled: 4',
         '[CheckIssues] Issues on github (https://github.com/dude/project):',
-        '[CheckIssues] open: 3',
+        '[CheckIssues]   open: 3',
     ),
     'bug information correctly printed',
 ) or diag 'saw log messages: ', explain $tzil->log_messages;
