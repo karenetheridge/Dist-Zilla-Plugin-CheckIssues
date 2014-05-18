@@ -27,7 +27,7 @@ my $tzil = Builder->from_config(
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
-                [ CheckIssues => { colour => 0 } ],
+                [ CheckIssues => { colour => 0, rt => 1, github => 0 } ],
                 [ FakeRelease => ],
             ),
             path(qw(source lib Foo.pm)) => "package Foo;\n1;\n",

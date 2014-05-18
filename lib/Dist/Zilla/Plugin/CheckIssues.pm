@@ -16,6 +16,38 @@ has [qw(rt github colour)] => (
     default => 1,
 );
 
+# [ user/org name, repo name ]
+has _github_repository => (
+    isa => 'ArrayRef[Str]',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+
+        my $distmeta = $self->zilla->distmeta;
+        my $url = (($distmeta->{resources} || {})->{repository} || {})->{url} || '';
+
+        my ($org_name, $repo_name) = $url =~ m{github\.com/([^/]+)/([^/]+?)(?:/|\.git|$)};
+
+        return [ $org_name, $repo_name ] if $org_name and $repo_name;
+
+        $self->log('failed to find a github repo in metadata');
+        [];
+    },
+    traits => ['Array'],
+    handles => { _github_repository => 'elements' },
+);
+
+has repo_url => (
+    is => 'ro', isa => 'Str',
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+        my ($org_name, $repo_name) = $self->_github_repository;
+        return "https://github.com/$org_name/$repo_name" if $org_name and $repo_name;
+        '';
+    },
+);
+
 sub mvp_aliases { +{ color => 'colour' } }
 
 sub before_release
@@ -41,10 +73,19 @@ sub before_release
         $self->log($text);
     }
 
-    if ($self->github)
+    if ($self->github
+        and my ($owner_name, $repo_name) = $self->_github_repository)
     {
-        # TODO: try to find out github repo and get issue info
-        $self->log_debug('github issue information not fetched yet...');
+        my $issue_count = $self->_github_issue_count($owner_name, $repo_name);
+        if (defined $issue_count)
+        {
+            my $colour = $issue_count ? 'red' : 'green';
+
+            my $text = 'Issues on github (' . $self->repo_url . "):\nopen: " . $issue_count;
+
+            $text = colored($text, $colour) if $self->colour;
+            $self->log($text);
+        }
     }
 
     return;
@@ -73,8 +114,21 @@ sub _rt_data_raw
 
     $self->log_debug('fetching RT bug data...');
     my $res = HTTP::Tiny->new->get('https://rt.cpan.org/Public/bugs-per-dist.json');
-    $self->log('could not fetch RT data?'), return undef if not $res->{success};
+    $self->log('could not fetch RT data?'), return if not $res->{success};
     return $res->{content};
+}
+
+sub _github_issue_count
+{
+    my ($self, $owner_name, $repo_name) = @_;
+
+    $self->log_debug('fetching github issues data...');
+    my $res = HTTP::Tiny->new->get('https://api.github.com/repos/' . $owner_name . '/' . $repo_name);
+    $self->log('could not fetch github data?'), return if not $res->{success};
+    my $json = $res->{content};
+
+    my $data = decode_json($json);
+    $data->{open_issues_count};
 }
 
 __PACKAGE__->meta->make_immutable;
