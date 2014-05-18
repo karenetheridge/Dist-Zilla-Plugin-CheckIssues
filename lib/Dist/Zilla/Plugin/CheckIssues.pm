@@ -204,7 +204,8 @@ L<codereview tool|https://github.com/rjbs/misc/blob/master/code-review>.
 
 =begin :list
 
-* L<foo>
+* L<Dist::Zilla::Plugin::MetaResources> - manually add resource information (such as git repository) to metadata
+* L<Dist::Zilla::Plugin::GithubMeta> - automatically detect and add github repository information to metadata
 
 =end :list
 
