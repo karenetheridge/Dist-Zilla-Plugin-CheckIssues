@@ -12,14 +12,13 @@ use Moose::Util 'find_meta';
 use lib 't/lib';
 use NoNetworkHits;
 
-# data copied from Moose stats
-my $rt_text = '{"Foo-Bar":{"dist":"Foo-Bar","counts":{"rejected":0,"inactive":1,"active":0,"resolved":1,"patched":0,"open":0,"stalled":0,"new":0}},"DZT-Sample":{"dist":"DZT-Sample","counts":{"rejected":47,"inactive":207,"active":52,"resolved":160,"patched":0,"deleted":108,"open":39,"stalled":4,"new":9}}}';
-
 {
     use Dist::Zilla::Plugin::CheckIssues;
     my $meta = find_meta('Dist::Zilla::Plugin::CheckIssues');
     $meta->make_mutable;
-    $meta->add_around_method_modifier(_rt_data_raw => sub { $rt_text });
+
+    # data copied from Moose stats
+    $meta->add_around_method_modifier(_rt_data_raw => sub { '{"Foo-Bar":{"dist":"Foo-Bar","counts":{"rejected":0,"inactive":1,"active":0,"resolved":1,"patched":0,"open":0,"stalled":0,"new":0}},"DZT-Sample":{"dist":"DZT-Sample","counts":{"rejected":47,"inactive":207,"active":52,"resolved":160,"patched":0,"deleted":108,"open":39,"stalled":4,"new":9}}}' });
     $meta->add_around_method_modifier(_github_issue_count => sub { 3 });
 }
 
