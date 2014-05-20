@@ -4,7 +4,7 @@ Dist::Zilla::Plugin::CheckIssues - Retrieve count of outstanding RT and github i
 
 # VERSION
 
-version 0.001
+version 0.002
 
 # SYNOPSIS
 
@@ -66,7 +66,8 @@ Some code was liberally stolen from Ricardo Signes's
 
 # SEE ALSO
 
-- [foo](https://metacpan.org/pod/foo)
+- [Dist::Zilla::Plugin::MetaResources](https://metacpan.org/pod/Dist::Zilla::Plugin::MetaResources) - manually add resource information (such as git repository) to metadata
+- [Dist::Zilla::Plugin::GithubMeta](https://metacpan.org/pod/Dist::Zilla::Plugin::GithubMeta) - automatically detect and add github repository information to metadata
 
 # AUTHOR
 
