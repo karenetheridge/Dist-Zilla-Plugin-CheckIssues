@@ -17,7 +17,7 @@ has [qw(rt github colour)] => (
 );
 
 has repo_url => (
-    is => 'ro', isa => 'Str',
+    is => 'rw', isa => 'Str',
     lazy => 1,
     default => sub {
         my $self = shift;
@@ -53,11 +53,13 @@ sub mvp_aliases { +{ color => 'colour' } }
 # built distribution in any way
 # around dump_config => sub...
 
-sub before_release
+sub get_issues
 {
     my $self = shift;
 
     my $dist_name = $self->zilla->name;
+
+    my @issues;
 
     if ($self->rt)
     {
@@ -73,7 +75,7 @@ sub before_release
         );
 
         @text = map { colored($_, $colour) } @text if $self->colour;
-        $self->log($_) foreach @text;
+        push @issues, @text;
     }
 
     if ($self->github
@@ -90,11 +92,18 @@ sub before_release
             );
 
             @text = map { colored($_, $colour) } @text if $self->colour;
-            $self->log($_) foreach @text;
+            push @issues, @text;
         }
     }
 
-    return;
+    return @issues;
+}
+
+sub before_release
+{
+    my $self = shift;
+
+    $self->log($_) foreach $self->get_issues;
 }
 
 sub _rt_data_for_dist
@@ -181,7 +190,7 @@ counts for your distribution before release.  Place it immediately before
 C<[ConfirmRelease]> in your F<dist.ini> to give you an opportunity to abort the
 release if you forgot to fix a bug or merge a pull request.
 
-=for Pod::Coverage mvp_aliases before_release
+=for Pod::Coverage mvp_aliases before_release get_issues
 
 =head1 CONFIGURATION OPTIONS
 
@@ -196,8 +205,6 @@ as sometimes tickets still end up on RT.)
 Checks the issue list on L<github|https://github.com> for your distribution; does
 nothing if your distribution is not hosted on L<github|https://github.com>, as
 listed in your distribution's metadata.  Defaults to true.
-
-(Not yet implemented. Coming soon!)
 
 =head2 C<colour> or C<color>
 

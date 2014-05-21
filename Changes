@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          - new "dzil issues" command
 
 0.002     2014-05-20 04:48:01Z
           - "github" option now fully supported
