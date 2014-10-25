@@ -2,6 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::Plugin::CheckIssues;
 # ABSTRACT: Retrieve count of outstanding RT and github issues for your distribution
+# KEYWORDS: plugin bugs issues rt github
 # vim: set ts=8 sw=4 tw=78 et :
 
 use Moose;
