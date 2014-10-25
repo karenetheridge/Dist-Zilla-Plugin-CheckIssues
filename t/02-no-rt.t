@@ -40,7 +40,7 @@ is(
     exception { $tzil->release },
     undef,
     'release proceeds normally',
-) or diag 'saw log messages: ', explain $tzil->log_messages;
+);
 
 cmp_deeply(
     [ map { split "\n" } @{ $tzil->log_messages } ],
@@ -49,6 +49,9 @@ cmp_deeply(
         '[CheckIssues]   open: 0   stalled: 0',
     ),
     'no RT information found - reported as 0 issues',
-) or diag 'saw log messages: ', explain $tzil->log_messages;
+);
+
+diag 'got log messages: ', explain $tzil->log_messages
+    if not Test::Builder->new->is_passing;
 
 done_testing;
