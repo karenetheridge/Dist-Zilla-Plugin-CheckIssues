@@ -180,7 +180,7 @@ listed in your distribution's metadata.  Defaults to true.
 
 (Not yet implemented. Coming soon!)
 
-=head2 C<color> or C<colour>
+=head2 C<colour> or C<color>
 
 Uses L<Term::ANSIColor> to colour-code the results according to severity.
 Defaults to true.
