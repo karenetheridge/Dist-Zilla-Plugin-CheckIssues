@@ -181,6 +181,12 @@ listed in your distribution's metadata.  Defaults to true.
 Uses L<Term::ANSIColor> to colour-code the results according to severity.
 Defaults to true.
 
+=head2 C<repo_url>
+
+The https form of URL of the github repository.  This is calculated from the
+C<resources> field in metadata, so it should not normally be specified
+manually.
+
 =head1 FUTURE FEATURES, MAYBE
 
 If I can find the right APIs to call, it would be nice to have a C<verbose>
