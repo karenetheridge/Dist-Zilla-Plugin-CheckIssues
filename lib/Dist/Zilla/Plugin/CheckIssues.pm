@@ -51,6 +51,10 @@ has repo_url => (
 
 sub mvp_aliases { +{ color => 'colour' } }
 
+# metaconfig is unimportant for this distribution since it does not alter the
+# built distribution in any way
+# around dump_config => sub...
+
 sub before_release
 {
     my $self = shift;
