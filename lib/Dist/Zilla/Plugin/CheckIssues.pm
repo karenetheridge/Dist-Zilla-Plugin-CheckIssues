@@ -65,7 +65,7 @@ sub before_release
     {
         my %rt_data = $self->_rt_data_for_dist($dist_name);
 
-        my $colour = $rt_data{open} ? 'red'
+        my $colour = $rt_data{open} ? 'orange'
             : $rt_data{stalled} ? 'yellow'
             : 'green';
 
@@ -84,7 +84,7 @@ sub before_release
         my $issue_count = $self->_github_issue_count($owner_name, $repo_name);
         if (defined $issue_count)
         {
-            my $colour = $issue_count ? 'red' : 'green';
+            my $colour = $issue_count ? 'orange' : 'green';
 
             my @text = (
                 'Issues on github (' . $self->repo_url . '):',
