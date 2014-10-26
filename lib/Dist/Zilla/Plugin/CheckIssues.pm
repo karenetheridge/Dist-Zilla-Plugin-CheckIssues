@@ -16,36 +16,35 @@ has [qw(rt github colour)] => (
     default => 1,
 );
 
-# [ user/org name, repo name ]
-has _github_repository => (
-    isa => 'ArrayRef[Str]',
-    lazy => 1,
-    default => sub {
-        my $self = shift;
-
-        my $distmeta = $self->zilla->distmeta;
-        my $url = (($distmeta->{resources} || {})->{repository} || {})->{url} || '';
-
-        my ($org_name, $repo_name) = $url =~ m{github\.com/([^/]+)/([^/]+?)(?:/|\.git|$)};
-
-        return [ $org_name, $repo_name ] if $org_name and $repo_name;
-
-        $self->log('failed to find a github repo in metadata');
-        [];
-    },
-    traits => ['Array'],
-    handles => { _github_repository => 'elements' },
-);
-
 has repo_url => (
     is => 'ro', isa => 'Str',
     lazy => 1,
     default => sub {
         my $self = shift;
-        my ($org_name, $repo_name) = $self->_github_repository;
-        return "https://github.com/$org_name/$repo_name" if $org_name and $repo_name;
-        '';
+        my $distmeta = $self->zilla->distmeta;
+        (($distmeta->{resources} || {})->{repository} || {})->{url} || '';
     },
+);
+
+has _github_owner_repo => (
+    isa => 'ArrayRef[Str]',
+    init_arg => undef,
+    lazy => 1,
+    default => sub {
+        my $self = shift;
+
+        if (my $url = $self->repo_url)
+        {
+            $self->log_debug('getting issue data for ' . $url . '...');
+            my ($owner_name, $repo_name) = $url =~ m{github\.com[:/]([^/]+)/([^/]+?)(?:/|\.git|$)};
+            return [ $owner_name, $repo_name ] if $owner_name and $repo_name;
+        }
+
+        $self->log('failed to find a github repo in metadata');
+        [];
+    },
+    traits => ['Array'],
+    handles => { _github_owner_repo => 'elements' },
 );
 
 sub mvp_aliases { +{ color => 'colour' } }
@@ -78,7 +77,7 @@ sub before_release
     }
 
     if ($self->github
-        and my ($owner_name, $repo_name) = $self->_github_repository)
+        and my ($owner_name, $repo_name) = $self->_github_owner_repo)
     {
         my $issue_count = $self->_github_issue_count($owner_name, $repo_name);
         if (defined $issue_count)
@@ -86,7 +85,7 @@ sub before_release
             my $colour = $issue_count ? 'orange' : 'green';
 
             my @text = (
-                'Issues on github (' . $self->repo_url . '):',
+                'Issues on github (https://github.com/' . $owner_name . '/' . $repo_name . '):',
                 '  open: ' . $issue_count,
             );
 
@@ -207,9 +206,8 @@ Defaults to true.
 
 =head2 C<repo_url>
 
-The https form of URL of the github repository.  This is calculated from the
-C<resources> field in metadata, so it should not normally be specified
-manually.
+The URL of the github repository.  This is fetched from the C<resources> field
+in metadata, so it should not normally be specified manually.
 
 =head1 FUTURE FEATURES, MAYBE
 
