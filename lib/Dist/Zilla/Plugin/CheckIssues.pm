@@ -7,8 +7,8 @@ package Dist::Zilla::Plugin::CheckIssues;
 
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
-use JSON::MaybeXS;
 use Term::ANSIColor 'colored';
+use Encode ();
 use namespace::autoclean;
 
 has [qw(rt github colour)] => (
@@ -105,7 +105,8 @@ sub _rt_data_for_dist
     my $json = $self->_rt_data_raw;
     return if not $json;
 
-    my $all_data = decode_json($json);
+    require JSON::MaybeXS;
+    my $all_data = JSON::MaybeXS->new(utf8 => 0)->decode($json);
     return if not $all_data->{$dist_name};
 
     my %rt_data;
@@ -120,10 +121,9 @@ sub _rt_data_raw
     my $self = shift;
 
     $self->log_debug('fetching RT bug data...');
-    require HTTP::Tiny;
-    my $res = HTTP::Tiny->new->get('https://rt.cpan.org/Public/bugs-per-dist.json');
-    $self->log('could not fetch RT data?'), return if not $res->{success};
-    return $res->{content};
+    my $data = $self->_fetch('https://rt.cpan.org/Public/bugs-per-dist.json');
+    $self->log('could not fetch RT data?'), return if not $data;
+    return $data;
 }
 
 sub _github_issue_count
@@ -131,13 +131,32 @@ sub _github_issue_count
     my ($self, $owner_name, $repo_name) = @_;
 
     $self->log_debug('fetching github issues data...');
-    require HTTP::Tiny;
-    my $res = HTTP::Tiny->new->get('https://api.github.com/repos/' . $owner_name . '/' . $repo_name);
-    $self->log('could not fetch github data?'), return if not $res->{success};
-    my $json = $res->{content};
 
-    my $data = decode_json($json);
+    my $json = $self->_fetch('https://api.github.com/repos/' . $owner_name . '/' . $repo_name);
+    $self->log('could not fetch github data?'), return if not $json;
+
+    require JSON::MaybeXS;
+    my $data = JSON::MaybeXS->new(utf8 => 0)->decode($json);
     $data->{open_issues_count};
+}
+
+sub _fetch
+{
+    my ($self, $url) = @_;
+
+    require HTTP::Tiny;
+    my $res = HTTP::Tiny->new->get($url);
+    return if not $res->{success};
+
+    my $data = $res->{content};
+
+    require HTTP::Headers;
+    if (my $charset = HTTP::Headers->new(%{ $res->{headers} })->content_type_charset)
+    {
+        $data = Encode::decode($charset, $data, Encode::FB_CROAK);
+    }
+
+    return $data;
 }
 
 __PACKAGE__->meta->make_immutable;
