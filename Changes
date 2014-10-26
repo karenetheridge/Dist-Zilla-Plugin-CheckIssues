@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.003     2014-10-26 21:47:27Z
           - new "dzil issues" command
 
 0.002     2014-05-20 04:48:01Z
