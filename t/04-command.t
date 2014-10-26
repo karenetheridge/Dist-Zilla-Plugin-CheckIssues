@@ -52,11 +52,16 @@ use NoNetworkHits;
     path($root, 'dist.ini')->spew_utf8(
         simple_ini(
             [ GatherDir => ],
+            [ '=inc::FatalMetadata' ],
             [ MetaResources => { 'repository.url' => 'git://github.com/dude/project.git' } ],
         )
     );
 
     my $result = test_dzil('.', [ 'issues', '--nocolour' ]);
+
+    my $zilla = $result->app->zilla;
+    ok(!$zilla->built_in, 'the dist was not fully built just to print issues');
+    is($zilla->{distmeta}, undef, 'dietmeta builder never ran');
 
     is($result->exit_code, 0, 'dzil would have exited 0');
     is($result->error, undef, 'no errors');

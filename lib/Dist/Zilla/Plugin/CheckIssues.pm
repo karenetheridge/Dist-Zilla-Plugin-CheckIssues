@@ -7,6 +7,7 @@ package Dist::Zilla::Plugin::CheckIssues;
 
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
+use List::Util 1.33 'none';
 use Term::ANSIColor 'colored';
 use Encode ();
 use namespace::autoclean;
@@ -21,8 +22,33 @@ has repo_url => (
     lazy => 1,
     default => sub {
         my $self = shift;
-        my $distmeta = $self->zilla->distmeta;
-        (($distmeta->{resources} || {})->{repository} || {})->{url} || '';
+
+        my $url;
+        if ($self->zilla->built_in)
+        {
+            # we've already done a build, so distmeta is available
+            my $distmeta = $self->zilla->distmeta;
+            $url = (($distmeta->{resources} || {})->{repository} || {})->{url} || '';
+        }
+        else
+        {
+            # no build (we're probably running the command): we cannot simply
+            # call ->distmeta because various plugins will cause side-effects
+            # with invalid assumptions (no files have been gathered, etc) --
+            # so we just query a short list of plugins that we know can
+            # provide repository resource metadata
+            foreach my $plugin (@{ $self->zilla->plugins_with(-MetaProvider) })
+            {
+                next if none { $plugin->isa('Dist::Zilla::Plugin::' . $_) }
+                    qw(MetaResources AutoMetaResources GithubMeta GitHub::Meta Repository);
+
+                $self->log_debug('calling metadata for ' . $plugin->plugin_name);
+                my $plugin_meta = $plugin->metadata;
+                $url = (($plugin_meta->{resources} || {})->{repository} || {})->{url} || '';
+                last if $url;
+            }
+        }
+        $url;
     },
 );
 
