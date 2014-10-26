@@ -7,7 +7,6 @@ package Dist::Zilla::Plugin::CheckIssues;
 
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
-use HTTP::Tiny;
 use JSON::MaybeXS;
 use Term::ANSIColor 'colored';
 use namespace::autoclean;
@@ -121,6 +120,7 @@ sub _rt_data_raw
     my $self = shift;
 
     $self->log_debug('fetching RT bug data...');
+    require HTTP::Tiny;
     my $res = HTTP::Tiny->new->get('https://rt.cpan.org/Public/bugs-per-dist.json');
     $self->log('could not fetch RT data?'), return if not $res->{success};
     return $res->{content};
@@ -131,6 +131,7 @@ sub _github_issue_count
     my ($self, $owner_name, $repo_name) = @_;
 
     $self->log_debug('fetching github issues data...');
+    require HTTP::Tiny;
     my $res = HTTP::Tiny->new->get('https://api.github.com/repos/' . $owner_name . '/' . $repo_name);
     $self->log('could not fetch github data?'), return if not $res->{success};
     my $json = $res->{content};
