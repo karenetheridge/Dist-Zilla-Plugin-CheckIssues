@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::CheckIssues - Retrieve count of outstanding RT and github i
 
 =head1 VERSION
 
-version 0.003
+version 0.004
 
 =head1 SYNOPSIS
 

@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.004     2014-10-27 19:22:56Z
           - fix bad use of "orange" as an ANSI colour (thanks, Apocalypse!)
 
 0.003     2014-10-26 21:47:27Z
