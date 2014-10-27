@@ -91,7 +91,7 @@ sub get_issues
     {
         my %rt_data = $self->_rt_data_for_dist($dist_name);
 
-        my $colour = $rt_data{open} ? 'orange'
+        my $colour = $rt_data{open} ? 'bright_red'
             : $rt_data{stalled} ? 'yellow'
             : 'green';
 
@@ -110,7 +110,7 @@ sub get_issues
         my $issue_count = $self->_github_issue_count($owner_name, $repo_name);
         if (defined $issue_count)
         {
-            my $colour = $issue_count ? 'orange' : 'green';
+            my $colour = $issue_count ? 'bright_red' : 'green';
 
             my @text = (
                 'Issues on github (https://github.com/' . $owner_name . '/' . $repo_name . '):',

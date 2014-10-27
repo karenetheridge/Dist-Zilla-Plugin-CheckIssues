@@ -1,6 +1,7 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          - fix bad use of "orange" as an ANSI colour (thanks, Apocalypse!)
 
 0.003     2014-10-26 21:47:27Z
           - new "dzil issues" command
