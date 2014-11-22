@@ -66,7 +66,7 @@ use NoNetworkHits;
     is($result->exit_code, 0, 'dzil would have exited 0');
     is($result->error, undef, 'no errors');
     is(
-        $result->output,
+        $result->stdout,
         join("\n",
             'Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
             '  open: 48   stalled: 4',
@@ -76,6 +76,9 @@ use NoNetworkHits;
         ),
         'RT and github issues printed',
     );
+
+    diag 'got stderr output: ' . $result->stderr
+        if $result->stderr;
 
     local $Data::Dumper::Maxdepth = 2;
     diag 'got result: ', explain $result
