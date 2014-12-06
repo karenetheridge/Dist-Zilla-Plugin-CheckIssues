@@ -139,7 +139,7 @@ sub _rt_data_for_dist
     my $json = $self->_rt_data_raw;
     return if not $json;
 
-    require JSON::MaybeXS;
+    require JSON::MaybeXS; JSON::MaybeXS->VERSION('1.001000');
     my $all_data = JSON::MaybeXS->new(utf8 => 0)->decode($json);
     return if not $all_data->{$dist_name};
 
@@ -169,7 +169,7 @@ sub _github_issue_count
     my $json = $self->_fetch('https://api.github.com/repos/' . $owner_name . '/' . $repo_name);
     $self->log('could not fetch github data?'), return if not $json;
 
-    require JSON::MaybeXS;
+    require JSON::MaybeXS; JSON::MaybeXS->VERSION('1.001000');
     my $data = JSON::MaybeXS->new(utf8 => 0)->decode($json);
     $data->{open_issues_count};
 }

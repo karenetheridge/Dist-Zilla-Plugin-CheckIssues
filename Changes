@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+          - bump up required version of JSON::MaybeXS, to ensure necessary
+            interfaces are available
 
 0.006     2014-11-22 03:39:42Z
           - better way of avoiding warnings in perl 5.21.6, while still
