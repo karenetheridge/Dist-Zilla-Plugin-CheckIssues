@@ -1,6 +1,8 @@
 Revision history for {{$dist->name}}
 
 {{$NEXT}}
+
+0.007     2014-12-06 05:09:40Z
           - bump up required version of JSON::MaybeXS, to ensure necessary
             interfaces are available
 
