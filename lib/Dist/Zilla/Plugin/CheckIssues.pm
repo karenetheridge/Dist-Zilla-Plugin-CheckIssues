@@ -42,7 +42,7 @@ has repo_url => (
                 next if none { $plugin->isa('Dist::Zilla::Plugin::' . $_) }
                     qw(MetaResources AutoMetaResources GithubMeta GitHub::Meta Repository);
 
-                $self->log_debug('calling metadata for ' . $plugin->plugin_name);
+                $self->log_debug([ 'calling metadata for %s', $plugin->plugin_name ]);
                 my $plugin_meta = $plugin->metadata;
                 $url = (($plugin_meta->{resources} || {})->{repository} || {})->{url} || '';
                 last if $url;
@@ -61,7 +61,7 @@ has _github_owner_repo => (
 
         if (my $url = $self->repo_url)
         {
-            $self->log_debug('getting issue data for ' . $url . '...');
+            $self->log_debug([ 'getting issue data for %s...', $url ]);
             my ($owner_name, $repo_name) = $url =~ m{github\.com[:/]([^/]+)/([^/]+?)(?:/|\.git|$)};
             return [ $owner_name, $repo_name ] if $owner_name and $repo_name;
         }
