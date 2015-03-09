@@ -2,7 +2,7 @@ use strict;
 use warnings;
 package Dist::Zilla::App::Command::issues;
 # ABSTRACT: Print the count of outstanding RT and github issues for your distribution
-# vim: set ts=8 sw=4 tw=78 et :
+# vim: set ts=8 sts=4 sw=4 tw=78 et :
 
 use Dist::Zilla::App -command;
 use namespace::autoclean;
