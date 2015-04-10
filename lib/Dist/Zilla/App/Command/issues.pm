@@ -5,7 +5,6 @@ package Dist::Zilla::App::Command::issues;
 # vim: set ts=8 sts=4 sw=4 tw=78 et :
 
 use Dist::Zilla::App -command;
-use namespace::autoclean;
 
 sub abstract { "print your distribution's count of outstanding RT and github issues" }
 
