@@ -1,6 +1,6 @@
-Revision history for {{$dist->name}}
+Revision history for Dist-Zilla-Plugin-CheckIssues
 
-{{$NEXT}}
+0.008     2015-04-10 20:36:40Z
           - bump up required version of Term::ANSIColor, to ensure the
             requested bright colours are available
 
