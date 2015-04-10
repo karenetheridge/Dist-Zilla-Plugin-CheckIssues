@@ -8,7 +8,7 @@ package Dist::Zilla::Plugin::CheckIssues;
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
 use List::Util 1.33 'none';
-use Term::ANSIColor 'colored';
+use Term::ANSIColor 3.00 'colored';
 use Encode ();
 use namespace::autoclean;
 
