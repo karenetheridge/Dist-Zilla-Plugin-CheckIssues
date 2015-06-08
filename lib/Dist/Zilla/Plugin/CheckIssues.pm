@@ -54,6 +54,7 @@ has repo_url => (
     },
 );
 
+# owner_name, repo_name
 has _github_owner_repo => (
     isa => 'ArrayRef[Str]',
     init_arg => undef,
