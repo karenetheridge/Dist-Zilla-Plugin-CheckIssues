@@ -22,7 +22,7 @@ my $rt_text = '{"Foo-Bar":{"dist":"Foo-Bar","counts":{"rejected":0,"inactive":1,
 }
 
 my $tzil = Builder->from_config(
-    { dist_root => 't/does-not-exist' },
+    { dist_root => 'does-not-exist' },
     {
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
