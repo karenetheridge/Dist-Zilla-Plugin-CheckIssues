@@ -3,7 +3,9 @@ use warnings;
 package Dist::Zilla::App::Command::issues;
 # ABSTRACT: Print the count of outstanding RT and github issues for your distribution
 # vim: set ts=8 sts=4 sw=4 tw=78 et :
+
 our $VERSION = '0.009';
+
 use Dist::Zilla::App -command;
 
 sub abstract { "print your distribution's count of outstanding RT and github issues" }
