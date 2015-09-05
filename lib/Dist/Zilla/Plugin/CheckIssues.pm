@@ -3,7 +3,7 @@ use warnings;
 package Dist::Zilla::Plugin::CheckIssues;
 # ABSTRACT: Retrieve count of outstanding RT and github issues for your distribution
 # KEYWORDS: plugin bugs issues rt github
-# vim: set ts=8 sts=4 sw=4 tw=78 et :
+# vim: set ts=8 sts=4 sw=4 tw=115 et :
 
 our $VERSION = '0.009';
 
