@@ -45,7 +45,7 @@ is(
 );
 
 cmp_deeply(
-    [ map { split "\n" } @{ $tzil->log_messages } ],
+    [ map { split /\n/ } @{ $tzil->log_messages } ],
     superbagof(
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
         '[CheckIssues]   open: 48   stalled: 4',

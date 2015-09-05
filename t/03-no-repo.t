@@ -41,7 +41,7 @@ is(
 );
 
 cmp_deeply(
-    [ map { split "\n" } @{ $tzil->log_messages } ],
+    [ map { split /\n/ } @{ $tzil->log_messages } ],
     superbagof(
         '[CheckIssues] failed to find a github repo in metadata',
     ),
