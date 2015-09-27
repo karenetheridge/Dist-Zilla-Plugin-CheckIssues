@@ -80,7 +80,6 @@ use NoNetworkHits;
     diag 'got stderr output: ' . $result->stderr
         if $result->stderr;
 
-    local $Data::Dumper::Maxdepth = 2;
     diag 'got result: ', explain $result
         if not Test::Builder->new->is_passing;
 }
@@ -124,7 +123,6 @@ use NoNetworkHits;
         'RT and github issues printed',
     );
 
-    local $Data::Dumper::Maxdepth = 2;
     diag 'got result: ', explain $result
         if not Test::Builder->new->is_passing;
 }
