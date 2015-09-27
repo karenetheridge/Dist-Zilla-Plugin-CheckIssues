@@ -1,5 +1,7 @@
 Revision history for Dist-Zilla-Plugin-CheckIssues
 
+{{$NEXT}}
+
 0.009     2015-09-27 07:32:40Z
           - fix test failures by avoiding versions of Log::Dispatch that lost
             STDOUT content
