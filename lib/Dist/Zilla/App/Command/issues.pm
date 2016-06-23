@@ -28,11 +28,12 @@ sub execute
     # parse dist.ini and load, instantiate all plugins
     my $zilla = $self->zilla;
 
-    my @plugins = grep { $_->isa('Dist::Zilla::Plugin::CheckIssues') } @{ $zilla->plugins };
-    if (not @plugins)
+    require List::Util;
+    my $plugin = List::Util::first { $_->isa('Dist::Zilla::Plugin::CheckIssues') } @{ $zilla->plugins };
+    if (not $plugin)
     {
         require Dist::Zilla::Plugin::CheckIssues;
-        push @plugins,
+        $plugin =
             Dist::Zilla::Plugin::CheckIssues->new(
                 zilla => $zilla,
                 plugin_name => 'issues_command',
@@ -42,9 +43,9 @@ sub execute
             );
     }
 
-    $plugins[0]->repo_url($opt->repo) if $opt->repo;
+    $plugin->repo_url($opt->repo) if $opt->repo;
 
-    my @issues = $plugins[0]->get_issues;
+    my @issues = $plugin->get_issues;
 
     $self->app->chrome->logger->unmute;
     $self->log($_) foreach @issues;
