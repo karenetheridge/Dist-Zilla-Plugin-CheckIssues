@@ -9,7 +9,7 @@ our $VERSION = '0.010';
 
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
-use List::Util 1.33 'none';
+use List::Util 1.33 'any';
 use Term::ANSIColor 3.00 'colored';
 use Encode ();
 use namespace::autoclean;
@@ -39,11 +39,17 @@ has repo_url => (
             # with invalid assumptions (no files have been gathered, etc) --
             # so we just query a short list of plugins that we know can
             # provide repository resource metadata
-            foreach my $plugin (@{ $self->zilla->plugins_with(-MetaProvider) })
-            {
-                next if none { $plugin->isa('Dist::Zilla::Plugin::' . $_) }
-                    qw(MetaResources AutoMetaResources GithubMeta GitHub::Meta Repository);
+            my @plugins = grep {
+                my $plugin = $_;
+                any { $plugin->isa('Dist::Zilla::Plugin::' . $_) }
+                    qw(MetaResources AutoMetaResources GithubMeta GitHub::Meta Repository)
+            } @{ $self->zilla->plugins_with(-MetaProvider) };
 
+            $self->log('Cannot find any resource metadata-providing plugins to run!')
+                if not @plugins;
+
+            foreach my $plugin (@plugins)
+            {
                 $self->log_debug([ 'calling metadata for %s', $plugin->plugin_name ]);
                 my $plugin_meta = $plugin->metadata;
                 $url = (($plugin_meta->{resources} || {})->{repository} || {})->{url} || '';

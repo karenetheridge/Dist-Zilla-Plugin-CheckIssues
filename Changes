@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-CheckIssues
 
 {{$NEXT}}
+          - warn if resources metadata could not be inferred from the
+            distribution in the 'dzil issues' command
 
 0.009     2015-09-27 07:32:40Z
           - fix test failures by avoiding versions of Log::Dispatch that lost
