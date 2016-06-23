@@ -61,7 +61,7 @@ use NoNetworkHits;
 
     my $zilla = $result->app->zilla;
     ok(!$zilla->built_in, 'the dist was not fully built just to print issues');
-    is($zilla->{distmeta}, undef, 'dietmeta builder never ran');
+    is($zilla->{distmeta}, undef, 'distmeta builder never ran');
 
     is($result->exit_code, 0, 'dzil would have exited 0');
     is($result->error, undef, 'no errors');
@@ -107,7 +107,7 @@ use NoNetworkHits;
 
     my $zilla = $result->app->zilla;
     ok(!$zilla->built_in, 'the dist was not fully built just to print issues');
-    is($zilla->{distmeta}, undef, 'dietmeta builder never ran');
+    is($zilla->{distmeta}, undef, 'distmeta builder never ran');
 
     is($result->exit_code, 0, 'dzil would have exited 0');
     is($result->error, undef, 'no errors');
