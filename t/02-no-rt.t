@@ -43,11 +43,11 @@ is(
 );
 
 cmp_deeply(
-    [ map { split /\n/ } @{ $tzil->log_messages } ],
-    superbagof(
+    [ grep { /^\[CheckIssues\]/ } @{ $tzil->log_messages } ],
+    [
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
         '[CheckIssues]   open: 0   stalled: 0',
-    ),
+    ],
     'no RT information found - reported as 0 issues',
 );
 

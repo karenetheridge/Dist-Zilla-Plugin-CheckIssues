@@ -22,13 +22,15 @@ use NoNetworkHits;
     $meta->add_around_method_modifier(_github_issue_count => sub { 3 });
 }
 
+my $repo = 'github.com/dude/project';
+
 my $tzil = Builder->from_config(
     { dist_root => 'does-not-exist' },
     {
         add_files => {
             path(qw(source dist.ini)) => simple_ini(
                 [ GatherDir => ],
-                [ MetaResources => { 'repository.url' => 'git://github.com/dude/project.git' } ],
+                [ MetaResources => { 'repository.url' => 'git://' . $repo . '.git' } ],
                 [ CheckIssues => { colour => 0 } ],
                 [ FakeRelease => ],
             ),
@@ -45,13 +47,14 @@ is(
 );
 
 cmp_deeply(
-    [ map { split /\n/ } @{ $tzil->log_messages } ],
-    superbagof(
+    [ grep { /^\[CheckIssues\]/ } @{ $tzil->log_messages } ],
+    [
+        '[CheckIssues] getting issue data for git://' . $repo . '.git...',
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
         '[CheckIssues]   open: 48   stalled: 4',
-        '[CheckIssues] Issues on github (https://github.com/dude/project):',
+        '[CheckIssues] Issues on github (https://' . $repo . '):',
         '[CheckIssues]   open: 3',
-    ),
+    ],
     'bug information correctly printed',
 );
 

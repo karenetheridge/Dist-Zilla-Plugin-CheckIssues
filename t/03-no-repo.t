@@ -41,10 +41,10 @@ is(
 );
 
 cmp_deeply(
-    [ map { split /\n/ } @{ $tzil->log_messages } ],
-    superbagof(
+    [ grep { /^\[CheckIssues\]/ } @{ $tzil->log_messages } ],
+    [
         '[CheckIssues] failed to find a github repo in metadata',
-    ),
+    ],
     'no RT information found - reported as 0 issues',
 );
 
