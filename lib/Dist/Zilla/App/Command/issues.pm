@@ -4,7 +4,7 @@ package Dist::Zilla::App::Command::issues;
 # ABSTRACT: Print the count of outstanding RT and github issues for your distribution
 # vim: set ts=8 sts=4 sw=4 tw=115 et :
 
-our $VERSION = '0.010';
+our $VERSION = '0.011';
 
 use Dist::Zilla::App -command;
 

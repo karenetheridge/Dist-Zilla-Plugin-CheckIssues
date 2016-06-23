@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::CheckIssues;
 # KEYWORDS: plugin bugs issues rt github
 # vim: set ts=8 sts=4 sw=4 tw=115 et :
 
-our $VERSION = '0.010';
+our $VERSION = '0.011';
 
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
