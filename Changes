@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-CheckIssues
 
-{{$NEXT}}
+0.010     2016-06-23 02:13:20Z
           - warn if resources metadata could not be inferred from the
             distribution in the 'dzil issues' command
 
