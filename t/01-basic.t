@@ -47,7 +47,7 @@ is(
 );
 
 cmp_deeply(
-    [ grep { /^\[CheckIssues\]/ } @{ $tzil->log_messages } ],
+    [ grep /^\[CheckIssues\]/, @{ $tzil->log_messages } ],
     [
         '[CheckIssues] getting issue data for git://' . $repo . '.git...',
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',

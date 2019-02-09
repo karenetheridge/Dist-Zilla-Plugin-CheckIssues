@@ -43,7 +43,7 @@ is(
 );
 
 cmp_deeply(
-    [ grep { /^\[CheckIssues\]/ } @{ $tzil->log_messages } ],
+    [ grep /^\[CheckIssues\]/, @{ $tzil->log_messages } ],
     [
         '[CheckIssues] Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=DZT-Sample):',
         '[CheckIssues]   open: 0   stalled: 0',

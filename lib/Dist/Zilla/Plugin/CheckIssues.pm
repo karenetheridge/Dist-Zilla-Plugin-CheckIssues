@@ -120,7 +120,7 @@ sub get_issues
             '  open: ' .  ($rt_data{open} || 0) . '   stalled: ' . ($rt_data{stalled} || 0),
         );
 
-        @text = map { colored($_, $colour) } @text if $self->colour;
+        @text = map colored($_, $colour), @text if $self->colour;
         push @issues, @text;
     }
 
@@ -137,7 +137,7 @@ sub get_issues
                 '  open: ' . $issue_count,
             );
 
-            @text = map { colored($_, $colour) } @text if $self->colour;
+            @text = map colored($_, $colour), @text if $self->colour;
             push @issues, @text;
         }
     }
