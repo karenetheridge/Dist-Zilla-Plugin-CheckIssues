@@ -132,8 +132,9 @@ sub get_issues
         {
             my $colour = $issue_count ? 'bright_red' : 'green';
 
+            my $url = 'https://github.com/'.$owner_name.'/'.$repo_name;
             my @text = (
-                'Issues on github (https://github.com/' . $owner_name . '/' . $repo_name . '):',
+                'Issues and/or pull requests on github ('.$url.'/issues and '.$url.'/pulls):',
                 '  open: ' . $issue_count,
             );
 
@@ -232,7 +233,7 @@ In your F<dist.ini>:
 =head1 DESCRIPTION
 
 This is a L<Dist::Zilla> plugin that retrieves the RT and/or github issue
-counts for your distribution before release.  Place it immediately before
+and pull request counts for your distribution before release.  Place it immediately before
 C<[ConfirmRelease]> in your F<dist.ini> to give you an opportunity to abort the
 release if you forgot to fix a bug or merge a pull request.
 

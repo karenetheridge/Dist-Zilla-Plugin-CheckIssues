@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-CheckIssues
 
 {{$NEXT}}
+          - print the links to github issues and PRs, rather than the top
+            level repository (RT#129876)
 
 0.010     2016-06-23 02:13:20Z
           - warn if resources metadata could not be inferred from the
