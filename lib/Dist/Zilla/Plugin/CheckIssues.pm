@@ -110,18 +110,19 @@ sub get_issues
     if ($self->rt)
     {
         my %rt_data = $self->_rt_data_for_dist($dist_name);
+        if (defined $rt_data{open} and defined $rt_data{stalled}) {
+            my $colour = $rt_data{open} ? 'bright_red'
+                : $rt_data{stalled} ? 'yellow'
+                : 'green';
 
-        my $colour = $rt_data{open} ? 'bright_red'
-            : $rt_data{stalled} ? 'yellow'
-            : 'green';
+            my @text = (
+                'Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=' . $dist_name . '):',
+                '  open: ' .  ($rt_data{open} || 0) . '   stalled: ' . ($rt_data{stalled} || 0),
+            );
 
-        my @text = (
-            'Issues on RT (https://rt.cpan.org/Public/Dist/Display.html?Name=' . $dist_name . '):',
-            '  open: ' .  ($rt_data{open} || 0) . '   stalled: ' . ($rt_data{stalled} || 0),
-        );
-
-        @text = map colored($_, $colour), @text if $self->colour;
-        push @issues, @text;
+            @text = map colored($_, $colour), @text if $self->colour;
+            push @issues, @text;
+        }
     }
 
     if ($self->github
@@ -177,7 +178,7 @@ sub _rt_data_raw
 
     $self->log_debug('fetching RT bug data...');
     my $data = $self->_fetch('https://rt.cpan.org/Public/bugs-per-dist.json');
-    $self->log('could not fetch RT data?'), return if not $data;
+    return if not $data;
     return $data;
 }
 
@@ -188,7 +189,7 @@ sub _github_issue_count
     $self->log_debug('fetching github issues data...');
 
     my $json = $self->_fetch('https://api.github.com/repos/' . $owner_name . '/' . $repo_name);
-    $self->log('could not fetch github data?'), return if not $json;
+    return if not $json;
 
     require JSON::MaybeXS; JSON::MaybeXS->VERSION('1.001000');
     my $data = JSON::MaybeXS->new(utf8 => 0)->decode($json);
@@ -201,7 +202,11 @@ sub _fetch
 
     require HTTP::Tiny;
     my $res = HTTP::Tiny->new->get($url);
-    return if not $res->{success};
+    if (not $res->{success}) {
+        $self->log('could not fetch from '.$url.': got '
+            .($res->{status} && $res->{content} ? $res->{status}.' '.$res->{content} : 'unknown'));
+        return;
+    }
 
     my $data = $res->{content};
 

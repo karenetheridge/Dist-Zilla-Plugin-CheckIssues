@@ -28,6 +28,8 @@ sub execute
     # parse dist.ini and load, instantiate all plugins
     my $zilla = $self->zilla;
 
+    $self->app->chrome->logger->unmute;
+
     require List::Util;
     my $plugin = List::Util::first { $_->isa('Dist::Zilla::Plugin::CheckIssues') } @{ $zilla->plugins };
     if (not $plugin)
@@ -47,7 +49,6 @@ sub execute
 
     my @issues = $plugin->get_issues;
 
-    $self->app->chrome->logger->unmute;
     $self->log($_) foreach @issues;
 }
 
