@@ -8,7 +8,7 @@ Dist::Zilla::Plugin::CheckIssues - Retrieve count of outstanding RT and github i
 
 =head1 VERSION
 
-version 0.010
+version 0.011
 
 =head1 SYNOPSIS
 
@@ -24,7 +24,7 @@ In your F<dist.ini>:
 =head1 DESCRIPTION
 
 This is a L<Dist::Zilla> plugin that retrieves the RT and/or github issue
-counts for your distribution before release.  Place it immediately before
+and pull request counts for your distribution before release.  Place it immediately before
 C<[ConfirmRelease]> in your F<dist.ini> to give you an opportunity to abort the
 release if you forgot to fix a bug or merge a pull request.
 

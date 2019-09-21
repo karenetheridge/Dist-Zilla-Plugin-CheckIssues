@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-CheckIssues
 
-{{$NEXT}}
+0.011     2019-09-21 16:50:53Z
           - print the links to github issues and PRs, rather than the top
             level repository (RT#129876)
           - no longer mutes errors in case of network issues
