@@ -5,7 +5,7 @@ package Dist::Zilla::Plugin::CheckIssues;
 # ABSTRACT: Retrieve count of outstanding RT and github issues for your distribution
 # KEYWORDS: plugin bugs issues rt github
 
-our $VERSION = '0.011';
+our $VERSION = '0.012';
 
 use Moose;
 with 'Dist::Zilla::Role::BeforeRelease';
